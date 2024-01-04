@@ -1,0 +1,24 @@
+﻿@model ExpensesWebApp.Models.Group
+
+@{
+    ViewData["Title"] = "Excluir";
+}
+
+<form asp-action="Delete">
+    <input asp-for="Id" hidden />
+    <h3>Tem certeza de que deseja excluir esse grupo e todas suas despesas?</h3>
+    <div class="border p-3">
+        <div>
+            <label asp-for="Name"><strong>Nome</strong></label>
+            <input asp-for="Name" class="form-control mb-3" disabled />
+        </div>
+        <div class="mb-2">
+            <button type="submit" class="btn btn-danger">Sim, quero excluir.</button>
+        </div>
+        <div>
+            <a class="btn btn-secondary" asp-controller="Group" asp-action="Index">Cancelar</a>
+        </div>
+
+    </div>
+</form>
+

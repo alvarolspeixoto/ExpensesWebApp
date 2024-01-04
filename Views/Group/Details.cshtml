@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Expense>
+@{
+    ViewData["Title"] = ViewData["groupName"];
+}
+<h1>@ViewData["groupName"]</h1>
+<p>Veja aqui as despesas desse grupo</p>
+
+<a href="@Url.Action("Create", "Expense", new {groupId = ViewData["groupId"]})" class="btn btn-primary mb-2">
+    <i class="bi bi-plus"></i>&nbsp;Adicionar nova despesa
+</a>
+<div class="flex align-content-center justify-content-center">
+    @if (Model.Count() == 0)
+    {
+        <div class="d-flex align-items-center justify-content-center border" style="height:200px">
+            <h2 class="text-danger">Esse grupo ainda não possui nenhuma despesa</h2>
+        </div>
+    }
+    else
+    {
+        <table class="table-bordered text-center" style="width:80%">
+            <thead>
+                <tr>
+                    <th>Nome da despesa</th>
+                    <th>Valor</th>
+                    <th>Categoria</th>
+                    <th style="width:20%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var expense in Model)
+                {
+                    <tr>
+                        <td>
+                            @expense.Name
+                        </td>
+                        <td>
+                            @expense.Value
+                        </td>
+                        <td>
+                            @expense.CategoryId
+                        </td>
+                        <td>
+                            <form asp-controller="Expense" asp-action="Delete">
+                                <input type="hidden" name="id" value="@expense.Id" />
+                                <button type="submit" class="btn btn-danger m-1">
+                                    Excluir
+                                </button>
+                            </form>
+                            @* <a class="btn btn-danger m-1">Excluir</a> *@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

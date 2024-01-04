@@ -1,0 +1,25 @@
+﻿@model ExpensesWebApp.Models.Category
+
+@{
+    ViewData["Title"] = "Deletar categoria";
+}
+
+<h1>Deletar categoria</h1>
+
+<h3>Tem certeza de que quer deletar essa categoria?</h3>
+<div>
+    <hr />
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <div class="border p-3 mt-4">
+            <div class="mb-3" style="width:30%">
+                <label asp-for="Name" class="mb-2">Nome</label>
+                <input disabled asp-for="Name" class="form-control"/>
+            </div>
+            <div>
+                <input type="submit" value="Excluir" class="btn btn-danger" />
+                <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+            </div>
+        </div>
+    </form>
+</div>
