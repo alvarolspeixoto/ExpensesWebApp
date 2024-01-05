@@ -6,7 +6,6 @@
 
 <p>Veja aqui seus grupos de despesas</p>
 <div class="flex align-content-center justify-content-center">
-
     <a class="btn btn-primary mb-3" asp-controller="Group" asp-action="Create">
         <i class="bi bi-plus"></i>&nbsp;Criar novo grupo de despesas
     </a>
@@ -18,11 +17,11 @@
     }
     else
     {
-        <table class="table-bordered text-center" style="width:80%">
+        <table class="table" style="width:80%">
             <thead>
                 <tr>
                     <th>Nome do grupo</th>
-                    <th style="width:20%"></th>
+                    <th style="width:30%"></th>
                 </tr>
             </thead>
             <tbody>
@@ -32,9 +31,13 @@
                         <td>
                             @group.Name
                         </td>
-                        <td>
-                            <a class="btn btn-secondary" asp-controller="Group" asp-action="Details" asp-route-id="@group.Id">Ver</a>
-                            <a class="btn btn-danger m-1" asp-controller="Group" asp-action="Delete" asp-route-id="@group.Id">Excluir</a>
+                        <td class="text-end">
+                            <a class="btn btn-secondary" asp-controller="Group" asp-action="Details" asp-route-id="@group.Id">
+                                <i class="bi bi-eye"></i>&nbsp;Ver
+                            </a>
+                            <a class="btn btn-danger m-1" asp-controller="Group" asp-action="Delete" asp-route-id="@group.Id">
+                                <i class="bi bi-trash3"></i>&nbsp;Excluir
+                            </a>
                         </td>
                     </tr>
                 }

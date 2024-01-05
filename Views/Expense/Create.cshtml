@@ -1,12 +1,11 @@
 ﻿@model ExpensesWebApp.Models.Expense
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Adicionar despesa";
 }
 
-<h1>Create</h1>
+<h1>@ViewData["Title"]</h1>
 
-<h4>Expense</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -38,12 +37,23 @@
             <span asp-validation-for="BillingDay" class="text-danger"></span>
             </div> *@
             <div class="form-group mb-2">
+                <label asp-for="Date" class="control-label"></label>
+                <div class="d-flex gap-2">
+                    <input id="date" asp-for="Date" type="date" class="form-control" />
+                    <a onclick="useCurrentDate()" style="width:200px" class="btn btn-primary">Usar data atual</a>
+                </div>
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
                 <label asp-for="CategoryId" class="control-label">Categoria</label>
                 <select asp-for="CategoryId" class="form-control">
-                    <option value="" selected>Nenhuma</option>
-                    @foreach (var category in ViewBag.categories)
+                    <option value="@null" selected>Nenhuma</option>
+                    @if (ViewBag.categories != null)
                     {
-                        <option value="@category.Id">@category.Name</option>
+                        @foreach (var category in ViewBag.categories)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
                     }
                 </select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
@@ -51,8 +61,6 @@
             <input hidden asp-for="GroupId" value="@ViewData["groupId"]" />
             <div class="form-group mb-2">
                 <input type="submit" value="Criar" class="btn btn-primary" />
-            </div>
-            <div>
                 <a class="btn btn-secondary" asp-controller="Group" asp-action="Details" asp-route-id="@ViewData["groupId"]">Voltar</a>
             </div>
         </form>
@@ -64,4 +72,15 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script type="text/javascript">
+        function useCurrentDate() {
+
+            var dateObj = new Date();
+            var currentDate = dateObj.toISOString().split('T')[0];
+            var date = document.querySelector("#date");
+            date.value = currentDate;
+            
+        }
+    </script>
 }

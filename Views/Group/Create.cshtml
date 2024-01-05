@@ -1,7 +1,7 @@
 ﻿@model ExpensesWebApp.Models.Group
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Criar grupo";
 }
 
 <h1>Criar grupo de despesas</h1>
@@ -10,22 +10,24 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group mb-2">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control mb-3 mt-1" />
+                <input asp-for="Name" class="form-control mt-1" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="d-flex form-group gap-2">
                 <input type="submit" value="Criar" class="btn btn-primary" />
+                <div>
+                    <a class="btn btn-secondary" asp-action="Index">Voltar</a>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Voltar</a>
-</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
