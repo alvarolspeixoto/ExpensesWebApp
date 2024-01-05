@@ -64,10 +64,12 @@ namespace ExpensesWebApp.Controllers
             {
                 _db.Groups.Add(group);
                 _db.SaveChanges();
-                TempData["success"] = "Grupo de despesas criado com sucesso.";
+                TempData["success"] = "Grupo de despesas criado com sucesso";
 
                 return RedirectToAction("Index");
             }
+
+            TempData["error"] = "Algum erro ocorreu";
             return View(group);
         }
 
@@ -110,7 +112,7 @@ namespace ExpensesWebApp.Controllers
 
             _db.Groups.Remove(group);
             _db.SaveChanges();
-            TempData["success"] = "Grupo excluído com sucesso.";
+            TempData["success"] = "Grupo excluído com sucesso";
             return RedirectToAction("Index");
         }
     }

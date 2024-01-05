@@ -28,11 +28,9 @@ namespace ExpensesWebApp.Controllers
                 return NotFound();
             }
 
-            //string groupName = group.Name;
             IEnumerable<Category> categories = _db.Categories.ToList();
             ViewBag.Categories = categories;
             ViewData["groupId"] = groupId;
-            //ViewData["groupName"] = groupName;
 
             return View();
         }
@@ -43,14 +41,25 @@ namespace ExpensesWebApp.Controllers
         public IActionResult Create(Expense expense)
         {
 
+            DateTime currentDate = DateTime.Now;
+            var expenseDate = expense.Date;
+
+            if (expenseDate > currentDate)
+            {
+                ModelState.AddModelError("Date", "A data inserida é posterior à data atual");
+            }
+
             if (ModelState.IsValid)
             {
-                DateTime date = expense.Date.ToUniversalTime();
-                expense.Date = date;
+                
+                expense.Date = expenseDate.ToUniversalTime();
                 _db.Expenses.Add(expense);
                 _db.SaveChanges();
+                TempData["success"] = "Despesa adicionada com sucesso";
                 return RedirectToAction("Details", "Group", new {id = expense.GroupId});
             }
+
+            TempData["error"] = "Algum erro ocorreu";
 
             return View(expense);
         }
@@ -79,16 +88,25 @@ namespace ExpensesWebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Expense expense)
         {
+            DateTime currentDate = DateTime.Now;
+            var expenseDate = expense.Date;
+
+            if (expenseDate > currentDate)
+            {
+                ModelState.AddModelError("Date", "A data inserida é posterior à data atual");
+            }
 
             if (ModelState.IsValid)
             {
-                DateTime date = expense.Date.ToUniversalTime();
-                expense.Date = date;
+                expense.Date = expenseDate.ToUniversalTime();
                 _db.Expenses.Update(expense);
                 _db.SaveChanges();
+                TempData["success"] = "Despesa editada com sucesso";
                 return RedirectToAction("Details", "Group", new {id = expense.GroupId});
 
             }
+
+            TempData["error"] = "Algum erro ocorreu";
 
             return View(expense);
         }
@@ -111,6 +129,7 @@ namespace ExpensesWebApp.Controllers
 
             _db.Expenses.Remove(expense);
             _db.SaveChanges();
+            TempData["success"] = "Despesa excluída com sucesso";
             return RedirectToAction("Details", "Group", new { id = expense.GroupId });
         }
 

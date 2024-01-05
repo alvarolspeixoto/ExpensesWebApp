@@ -45,9 +45,11 @@ namespace ExpensesWebApp.Controllers
             {
                 _db.Categories.Add(category);
                 _db.SaveChanges();
-                TempData["success"] = "Categoria criada com sucesso.";
+                TempData["success"] = "Categoria criada com sucesso";
                 return RedirectToAction("Index");
             }
+
+            TempData["error"] = "Algum erro ocorreu";
 
             return View(category);
         }
@@ -86,7 +88,7 @@ namespace ExpensesWebApp.Controllers
             {
                 _db.Categories.Update(category);
                 _db.SaveChanges();
-                TempData["success"] = "Categoria atualizada com sucesso.";
+                TempData["success"] = "Categoria atualizada com sucesso";
                 return RedirectToAction("Index");
             }
 
