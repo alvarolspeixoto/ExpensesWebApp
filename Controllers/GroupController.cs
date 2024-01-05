@@ -1,6 +1,7 @@
 ﻿using ExpensesWebApp.Data;
 using ExpensesWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpensesWebApp.Controllers
 {
@@ -32,7 +33,7 @@ namespace ExpensesWebApp.Controllers
 
             string groupName = group.Name;
 
-            IEnumerable<Expense> groupExpenses = _db.Expenses.Where(a => a.GroupId == id);
+            IEnumerable<Expense> groupExpenses = _db.Expenses.Where(a => a.GroupId == id).Include(e => e.Category);
 
             ViewData["groupName"] = groupName;
             ViewData["groupId"] = id;

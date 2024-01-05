@@ -28,11 +28,11 @@ namespace ExpensesWebApp.Controllers
                 return NotFound();
             }
 
-            string groupName = group.Name;
+            //string groupName = group.Name;
             IEnumerable<Category> categories = _db.Categories.ToList();
             ViewBag.Categories = categories;
             ViewData["groupId"] = groupId;
-            ViewData["groupName"] = groupName;
+            //ViewData["groupName"] = groupName;
 
             return View();
         }
@@ -45,9 +45,49 @@ namespace ExpensesWebApp.Controllers
 
             if (ModelState.IsValid)
             {
+                DateTime date = expense.Date.ToUniversalTime();
+                expense.Date = date;
                 _db.Expenses.Add(expense);
                 _db.SaveChanges();
                 return RedirectToAction("Details", "Group", new {id = expense.GroupId});
+            }
+
+            return View(expense);
+        }
+
+        public IActionResult Edit(int? id) {
+
+            if (id == 0 || id == null)
+            {
+                return NotFound();
+            }
+
+            var expense = _db.Expenses.Find(id);
+
+            if (expense == null)
+            {
+                return NotFound();
+            }
+
+            IEnumerable<Category> categories = _db.Categories.ToList();
+            ViewBag.Categories = categories;
+            ViewData["groupId"] = expense.GroupId;
+
+            return View(expense);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Expense expense)
+        {
+
+            if (ModelState.IsValid)
+            {
+                DateTime date = expense.Date.ToUniversalTime();
+                expense.Date = date;
+                _db.Expenses.Update(expense);
+                _db.SaveChanges();
+                return RedirectToAction("Details", "Group", new {id = expense.GroupId});
+
             }
 
             return View(expense);
