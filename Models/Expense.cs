@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExpensesWebApp.Models
 {
@@ -9,23 +8,27 @@ namespace ExpensesWebApp.Models
         [Key]
         public int Id { get; set; }
         [DisplayName("Nome")]
-        [Required]
+        [Required(ErrorMessage = "Insira um nome")]
         [StringLength(45)]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Insira um valor")]
         [DisplayName("Valor")]
         public decimal Value { get; set; }
+        [Required(ErrorMessage = "Escolha uma data")]
+        [DisplayName("Data")]
+        public DateTime Date { get; set; }
         [Required]
         [DisplayName("Despesa recorrente?")]
         public bool Recurrent { get; set; }
-        public int PeriodInDays { get; set; }
-        public int BillingDay { get; set; }
 
-        public virtual int? CategoryId { get; set; } = null;
-        public virtual Category? Categories { get; set; }
+        public int? PeriodInDays { get; set; } = null;
+        public int? BillingDay { get; set; } = null;
+
+        public int? CategoryId { get; set; }
+        public virtual Category? Category { get; set; } = null;
         [Required]
-        public virtual int GroupId { get; set; }
-        public virtual Group? Groups { get; set; }
+        public int GroupId { get; set; }
+        public virtual Group? Group { get; set; }
         
     }
 }

@@ -7,7 +7,7 @@ namespace ExpensesWebApp.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required(ErrorMessage = "Este campo não pode ser vazio.")]
+        [Required(ErrorMessage = "Insira um nome")]
         [DisplayName("Nome")]
         public string Name { get; set; }
     }
