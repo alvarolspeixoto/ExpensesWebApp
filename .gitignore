@@ -2,3 +2,4 @@ appsettings.json
 .vs/
 bin/
 obj/
+wwwroot/css/bootswatchTheme.css
