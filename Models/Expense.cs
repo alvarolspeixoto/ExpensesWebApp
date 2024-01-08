@@ -10,7 +10,7 @@ namespace ExpensesWebApp.Models
         [DisplayName("Nome")]
         [Required(ErrorMessage = "Insira um nome")]
         [StringLength(45)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [Required(ErrorMessage = "Insira um valor")]
         [DisplayName("Valor")]
         public decimal Value { get; set; }

@@ -9,6 +9,6 @@ namespace ExpensesWebApp.Models
         public int Id { get; set; }
         [Required(ErrorMessage = "Insira um nome")]
         [DisplayName("Nome")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }

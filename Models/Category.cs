@@ -12,6 +12,6 @@ namespace ExpensesWebApp.Models
         [Required(ErrorMessage="Insira um nome")]
         [StringLength(50)]
         [DisplayName("Nome")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }
