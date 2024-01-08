@@ -19,12 +19,12 @@ namespace ExpensesWebApp.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>()
-            .HasIndex(e => e.Name)
-            .IsUnique();
+                        .HasIndex(e => e.Name)
+                        .IsUnique();
 
             modelBuilder.Entity<Group>()
-            .HasIndex(e => e.Name)
-            .IsUnique();
+                        .HasIndex(e => e.Name)
+                        .IsUnique();
         }
 
     }

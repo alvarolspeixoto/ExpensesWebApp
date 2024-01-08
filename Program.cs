@@ -1,13 +1,26 @@
 using ExpensesWebApp.Data;
+using ExpensesWebApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<ExpensesAppDbContext>(options => options.UseNpgsql(
-    builder.Configuration.GetConnectionString("DefaultConnection")
-    ));
+
+builder.Services.AddDbContext<ExpensesAppDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<UserDbContext>(options => options.UseNpgsql(connectionString));
+
+builder.Services.AddIdentity<User, IdentityRole>(
+    options =>
+    {
+        options.Password.RequiredUniqueChars = 0;
+        options.Password.RequireDigit = true;
+        options.Password.RequiredLength = 8;
+        options.Password.RequireUppercase = true;
+    })
+    .AddEntityFrameworkStores<UserDbContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
 
