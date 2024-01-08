@@ -1,0 +1,57 @@
+﻿@using ExpensesWebApp.ViewModels;
+@model RegisterViewModel;
+@{
+    ViewData["Title"] = "Registre-se";
+}
+
+<div class="row d-flex align-items-center justify-content-center">
+    <div class="col-md-3 card p-3">
+        <h2 class="text-center text-info">Registre-se</h2>
+        <form asp-action="Register" method="post">
+            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+            <div class="mb-1">
+                <label asp-for="FullName"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ConfirmPassword"></label>
+                <input type="password" asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            @* <span class="text-danger text-sm-center mt-2">
+            @Html.ValidationMessage("LoginFailure")
+            </span> *@
+            
+            <div class="row">
+                <div class="col-8">
+                    <a class="text-decoration-none float-start mt-2" asp-action="Login">Já possui uma conta?</a>
+                </div>
+                <div class="col-4">
+                    <input type="submit" value="Registrar" class="btn btn-primary btn-sm float-end" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
