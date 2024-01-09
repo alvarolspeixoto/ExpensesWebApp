@@ -4,11 +4,8 @@
     ViewData["Title"] = "Deletar categoria";
 }
 
-<h1>Deletar categoria</h1>
-
-<h3>Tem certeza de que quer deletar essa categoria?</h3>
+<h3 class="text-danger">Tem certeza de que deseja deletar essa categoria?</h3>
 <div>
-    <hr />
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <div class="border p-3 mt-4">
