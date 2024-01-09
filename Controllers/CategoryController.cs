@@ -1,7 +1,7 @@
 ﻿using ExpensesWebApp.Data;
 using ExpensesWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpensesWebApp.Controllers
 {
@@ -15,10 +15,10 @@ namespace ExpensesWebApp.Controllers
             _db = db;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
 
-            IEnumerable<Category> categories = _db.Categories.ToList();
+            IEnumerable<Category> categories = await _db.Categories.ToListAsync();
 
             return View(categories);
         }
@@ -44,7 +44,7 @@ namespace ExpensesWebApp.Controllers
             if (ModelState.IsValid)
             {
                 _db.Categories.Add(category);
-                _db.SaveChanges();
+                _db.SaveChangesAsync();
                 TempData["success"] = "Categoria criada com sucesso";
                 return RedirectToAction("Index");
             }
@@ -55,7 +55,7 @@ namespace ExpensesWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
 
             if (id == null || id == 0)
@@ -63,7 +63,7 @@ namespace ExpensesWebApp.Controllers
                 return NotFound();
             }
 
-            var category = _db.Categories.Find(id);
+            var category = await _db.Categories.FindAsync(id);
 
             if (category == null)
             {
@@ -75,9 +75,9 @@ namespace ExpensesWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Category category)
+        public async Task<IActionResult> Edit(Category category)
         {
-            bool exists = _db.Categories.Any(c => c.Name == category.Name && c.Id != category.Id);
+            bool exists = await _db.Categories.AnyAsync(c => c.Name == category.Name && c.Id != category.Id);
 
             if (exists)
             {
@@ -87,7 +87,7 @@ namespace ExpensesWebApp.Controllers
             if (ModelState.IsValid)
             {
                 _db.Categories.Update(category);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
                 TempData["success"] = "Categoria atualizada com sucesso";
                 return RedirectToAction("Index");
             }
@@ -96,7 +96,7 @@ namespace ExpensesWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
 
             if (id == null || id == 0)
@@ -104,7 +104,7 @@ namespace ExpensesWebApp.Controllers
                 return NotFound();
             }
 
-            var category = _db.Categories.Find(id);
+            var category = await _db.Categories.FindAsync(id);
 
             if (category == null)
             {
@@ -116,10 +116,10 @@ namespace ExpensesWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Category category)
+        public async Task<IActionResult> Delete(Category category)
         {
             _db.Remove(category);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             TempData["success"] = "Categoria excluída com sucesso";
 
             return RedirectToAction("Index");

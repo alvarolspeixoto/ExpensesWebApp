@@ -16,24 +16,25 @@ namespace ExpensesWebApp.Controllers
         {
             _db = db;
         }
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<Group> groups = _db.Groups.ToList();
+            IEnumerable<Group> groups = await _db.Groups.ToListAsync();
 
             return View(groups);
         }
 
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
 
-            var group = _db.Groups.Find(id);
+            var group = await _db.Groups.FindAsync(id);
 
             if (group == null)
             {
                 return NotFound();
             }
 
-            string groupName = group.Name;
+            string groupName = group.Name!;
 
             IEnumerable<Expense> groupExpenses = _db.Expenses.Where(a => a.GroupId == id).Include(e => e.Category);
 
@@ -52,10 +53,10 @@ namespace ExpensesWebApp.Controllers
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Group group)
+        public async Task<IActionResult> Create(Group group)
         {
 
-            bool exists = _db.Groups.Any(e => e.Name == group.Name);
+            bool exists = await _db.Groups.AnyAsync(e => e.Name == group.Name);
 
             if (exists)
             {
@@ -65,7 +66,7 @@ namespace ExpensesWebApp.Controllers
             if (ModelState.IsValid)
             {
                 _db.Groups.Add(group);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
                 TempData["success"] = "Grupo de despesas criado com sucesso";
 
                 return RedirectToAction("Index");
@@ -76,7 +77,7 @@ namespace ExpensesWebApp.Controllers
         }
 
         // GET
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
 
             if (id == null || id == 0)
@@ -84,7 +85,7 @@ namespace ExpensesWebApp.Controllers
                 return NotFound();
             }
 
-            var group = _db.Groups.Find(id);
+            var group = await _db.Groups.FindAsync(id);
 
             if (group == null)
             {
@@ -97,7 +98,7 @@ namespace ExpensesWebApp.Controllers
         // POST
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeletePOST(int? id)
+        public async Task<IActionResult> DeletePOST(int? id)
         {
 
             if (id == null || id == 0)
@@ -105,7 +106,7 @@ namespace ExpensesWebApp.Controllers
                 return NotFound();
             }
 
-            var group = _db.Groups.Find(id);
+            var group = await _db.Groups.FindAsync(id);
 
             if (group == null)
             {
@@ -113,7 +114,7 @@ namespace ExpensesWebApp.Controllers
             }
 
             _db.Groups.Remove(group);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             TempData["success"] = "Grupo excluído com sucesso";
             return RedirectToAction("Index");
         }

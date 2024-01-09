@@ -1,6 +1,7 @@
 ﻿using ExpensesWebApp.Data;
 using ExpensesWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpensesWebApp.Controllers
 {
@@ -14,21 +15,21 @@ namespace ExpensesWebApp.Controllers
         }
 
         // GET
-        public IActionResult Create(int? groupId)
+        public async Task<IActionResult> Create(int? groupId)
         {
             if (groupId == null || groupId == 0)
             {
                 return NotFound();
             }
 
-            var group = _db.Groups.Find(groupId);
+            var group = await _db.Groups.FindAsync(groupId);
 
             if (group == null)
             {
                 return NotFound();
             }
 
-            IEnumerable<Category> categories = _db.Categories.ToList();
+            IEnumerable<Category> categories = await _db.Categories.ToListAsync();
             ViewBag.Categories = categories;
             ViewData["groupId"] = groupId;
 
@@ -38,7 +39,7 @@ namespace ExpensesWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Expense expense)
+        public async Task<IActionResult> Create(Expense expense)
         {
 
             DateTime currentDate = DateTime.Now;
@@ -54,7 +55,7 @@ namespace ExpensesWebApp.Controllers
                 
                 expense.Date = expenseDate.ToUniversalTime();
                 _db.Expenses.Add(expense);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
                 TempData["success"] = "Despesa adicionada com sucesso";
                 return RedirectToAction("Details", "Group", new {id = expense.GroupId});
             }
@@ -64,21 +65,21 @@ namespace ExpensesWebApp.Controllers
             return View(expense);
         }
 
-        public IActionResult Edit(int? id) {
+        public async Task<IActionResult> Edit(int? id) {
 
             if (id == 0 || id == null)
             {
                 return NotFound();
             }
 
-            var expense = _db.Expenses.Find(id);
+            var expense = await _db.Expenses.FindAsync(id);
 
             if (expense == null)
             {
                 return NotFound();
             }
 
-            IEnumerable<Category> categories = _db.Categories.ToList();
+            IEnumerable<Category> categories = await _db.Categories.ToListAsync();
             ViewBag.Categories = categories;
             ViewData["groupId"] = expense.GroupId;
 
@@ -86,7 +87,7 @@ namespace ExpensesWebApp.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Expense expense)
+        public async Task<IActionResult> Edit(Expense expense)
         {
             DateTime currentDate = DateTime.Now;
             var expenseDate = expense.Date;
@@ -100,7 +101,7 @@ namespace ExpensesWebApp.Controllers
             {
                 expense.Date = expenseDate.ToUniversalTime();
                 _db.Expenses.Update(expense);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
                 TempData["success"] = "Despesa editada com sucesso";
                 return RedirectToAction("Details", "Group", new {id = expense.GroupId});
 
@@ -113,14 +114,14 @@ namespace ExpensesWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == 0 || id == null)
             {
                 return NotFound();
             }
 
-            var expense = _db.Expenses.Find(id);
+            var expense = await _db.Expenses.FindAsync(id);
 
             if (expense == null)
             {
@@ -128,7 +129,7 @@ namespace ExpensesWebApp.Controllers
             }
 
             _db.Expenses.Remove(expense);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             TempData["success"] = "Despesa excluída com sucesso";
             return RedirectToAction("Details", "Group", new { id = expense.GroupId });
         }
