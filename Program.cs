@@ -1,5 +1,6 @@
 using ExpensesWebApp.Data;
 using ExpensesWebApp.Models;
+using ExpensesWebApp.Services.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,12 +16,14 @@ builder.Services.AddIdentity<User, IdentityRole>(
     options =>
     {
         options.Password.RequiredUniqueChars = 0;
-        options.Password.RequireDigit = false;
+        options.Password.RequireDigit = true;
         options.Password.RequiredLength = 8;
-        options.Password.RequireUppercase = false;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = false;
     })
     .AddEntityFrameworkStores<UserDbContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    .AddErrorDescriber<CustomIdentityErrorDescriber>();
 
 var app = builder.Build();
 
