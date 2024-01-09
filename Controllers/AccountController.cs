@@ -33,10 +33,11 @@ namespace ExpensesWebApp.Controllers
 
                 if (result.Succeeded)
                 {
+                    TempData["success"] = "Você está logado.";
                     return RedirectToAction("Index", "Home");
                 }
-
-                ModelState.AddModelError("", "Tentativa de login inválida");
+                TempData["error"] = "Tentativa de login inválida.";
+                ModelState.AddModelError("LoginFailure", "Tentativa de login inválida.");
 
                 return View(model);
             }

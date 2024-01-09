@@ -47,7 +47,7 @@ namespace ExpensesWebApp.Controllers
 
             if (expenseDate > currentDate)
             {
-                ModelState.AddModelError("Date", "A data inserida é posterior à data atual");
+                ModelState.AddModelError("Date", "A data inserida é posterior à data atual.");
             }
 
             if (ModelState.IsValid)
@@ -56,11 +56,14 @@ namespace ExpensesWebApp.Controllers
                 expense.Date = expenseDate.ToUniversalTime();
                 _db.Expenses.Add(expense);
                 await _db.SaveChangesAsync();
-                TempData["success"] = "Despesa adicionada com sucesso";
+                TempData["success"] = "Despesa adicionada com sucesso.";
                 return RedirectToAction("Details", "Group", new {id = expense.GroupId});
             }
 
-            TempData["error"] = "Algum erro ocorreu";
+            ViewData["groupId"] = expense.GroupId;
+            IEnumerable<Category> categories = await _db.Categories.ToListAsync();
+            ViewBag.Categories = categories;
+            TempData["error"] = "Algum erro ocorreu.";
 
             return View(expense);
         }
@@ -94,7 +97,7 @@ namespace ExpensesWebApp.Controllers
 
             if (expenseDate > currentDate)
             {
-                ModelState.AddModelError("Date", "A data inserida é posterior à data atual");
+                ModelState.AddModelError("Date", "A data inserida é posterior à data atual.");
             }
 
             if (ModelState.IsValid)
@@ -102,12 +105,15 @@ namespace ExpensesWebApp.Controllers
                 expense.Date = expenseDate.ToUniversalTime();
                 _db.Expenses.Update(expense);
                 await _db.SaveChangesAsync();
-                TempData["success"] = "Despesa editada com sucesso";
+                TempData["success"] = "Despesa editada com sucesso.";
                 return RedirectToAction("Details", "Group", new {id = expense.GroupId});
 
             }
 
-            TempData["error"] = "Algum erro ocorreu";
+            ViewData["groupId"] = expense.GroupId;
+            IEnumerable<Category> categories = await _db.Categories.ToListAsync();
+            ViewBag.Categories = categories;
+            TempData["error"] = "Algum erro ocorreu.";
 
             return View(expense);
         }
@@ -130,7 +136,7 @@ namespace ExpensesWebApp.Controllers
 
             _db.Expenses.Remove(expense);
             await _db.SaveChangesAsync();
-            TempData["success"] = "Despesa excluída com sucesso";
+            TempData["success"] = "Despesa excluída com sucesso.";
             return RedirectToAction("Details", "Group", new { id = expense.GroupId });
         }
 

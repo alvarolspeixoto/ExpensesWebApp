@@ -8,13 +8,13 @@ namespace ExpensesWebApp.Models
         [Key]
         public int Id { get; set; }
         [DisplayName("Nome")]
-        [Required(ErrorMessage = "Insira um nome")]
+        [Required(ErrorMessage = "Insira um nome.")]
         [StringLength(45)]
         public string? Name { get; set; }
-        [Required(ErrorMessage = "Insira um valor")]
+        [Required(ErrorMessage = "Insira um valor.")]
         [DisplayName("Valor")]
         public decimal Value { get; set; }
-        [Required(ErrorMessage = "Escolha uma data")]
+        [Required(ErrorMessage = "Escolha uma data.")]
         [DisplayName("Data")]
         public DateTime Date { get; set; }
         [Required]

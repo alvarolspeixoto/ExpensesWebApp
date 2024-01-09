@@ -38,18 +38,18 @@ namespace ExpensesWebApp.Controllers
 
             if (exists)
             {
-                ModelState.AddModelError("Name", "Essa categoria já existe");
+                ModelState.AddModelError("Name", "Essa categoria já existe.");
             }
 
             if (ModelState.IsValid)
             {
                 _db.Categories.Add(category);
                 _db.SaveChangesAsync();
-                TempData["success"] = "Categoria criada com sucesso";
+                TempData["success"] = "Categoria criada com sucesso.";
                 return RedirectToAction("Index");
             }
 
-            TempData["error"] = "Algum erro ocorreu";
+            TempData["error"] = "Algum erro ocorreu.";
 
             return View(category);
         }
@@ -88,7 +88,7 @@ namespace ExpensesWebApp.Controllers
             {
                 _db.Categories.Update(category);
                 await _db.SaveChangesAsync();
-                TempData["success"] = "Categoria atualizada com sucesso";
+                TempData["success"] = "Categoria atualizada com sucesso.";
                 return RedirectToAction("Index");
             }
 
@@ -120,7 +120,7 @@ namespace ExpensesWebApp.Controllers
         {
             _db.Remove(category);
             await _db.SaveChangesAsync();
-            TempData["success"] = "Categoria excluída com sucesso";
+            TempData["success"] = "Categoria excluída com sucesso.";
 
             return RedirectToAction("Index");
         }
