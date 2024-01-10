@@ -3,3 +3,6 @@ appsettings.json
 bin/
 obj/
 wwwroot/css/bootswatchTheme.css
+*.csproj
+*.sln
+*.user
