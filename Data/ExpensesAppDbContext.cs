@@ -1,9 +1,10 @@
 ﻿using ExpensesWebApp.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpensesWebApp.Data
 {
-    public class ExpensesAppDbContext : DbContext
+    public class ExpensesAppDbContext : IdentityDbContext<ApplicationUser>
     {
         public ExpensesAppDbContext(DbContextOptions<ExpensesAppDbContext> options) : base(options)
         {
@@ -18,6 +19,8 @@ namespace ExpensesWebApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Category>()
                         .HasIndex(e => e.Name)
                         .IsUnique();
@@ -25,6 +28,7 @@ namespace ExpensesWebApp.Data
             modelBuilder.Entity<Group>()
                         .HasIndex(e => e.Name)
                         .IsUnique();
+
         }
 
     }

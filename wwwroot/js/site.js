@@ -5,7 +5,13 @@
 function useCurrentDate() {
 
     var dateObj = new Date();
-    var currentDate = dateObj.toISOString().split('T')[0];
+
+    // Obter os componentes da data
+    var day = ('0' + dateObj.getDate()).slice(-2);
+    var month = ('0' + (dateObj.getMonth() + 1)).slice(-2); // Adicionar 1 e garantir dois dígitos
+    var year = dateObj.getFullYear();
+
+    var currentDate = `${year}-${month}-${day}`
     var date = document.querySelector("#date");
     date.value = currentDate;
 

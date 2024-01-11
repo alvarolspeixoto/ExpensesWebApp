@@ -10,9 +10,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ExpensesAppDbContext>(options => options.UseNpgsql(connectionString));
-builder.Services.AddDbContext<UserDbContext>(options => options.UseNpgsql(connectionString));
 
-builder.Services.AddIdentity<User, IdentityRole>(
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(
     options =>
     {
         options.Password.RequiredUniqueChars = 0;
@@ -21,7 +20,7 @@ builder.Services.AddIdentity<User, IdentityRole>(
         options.Password.RequireUppercase = true;
         options.Password.RequireNonAlphanumeric = false;
     })
-    .AddEntityFrameworkStores<UserDbContext>()
+    .AddEntityFrameworkStores<ExpensesAppDbContext>()
     .AddDefaultTokenProviders()
     .AddErrorDescriber<CustomIdentityErrorDescriber>();
 

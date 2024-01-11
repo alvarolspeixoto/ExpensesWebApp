@@ -1,6 +1,7 @@
 ﻿using ExpensesWebApp.Data;
 using ExpensesWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,15 +12,18 @@ namespace ExpensesWebApp.Controllers
     {
 
         private readonly ExpensesAppDbContext _db;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public GroupController(ExpensesAppDbContext db)
+        public GroupController(ExpensesAppDbContext db, UserManager<ApplicationUser> userManager)
         {
             _db = db;
+            _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            IEnumerable<Group> groups = await _db.Groups.ToListAsync();
+            var userId = _userManager.GetUserId(User);
+            IEnumerable<Group> groups = _db.Groups.Where(g => g.UserId == userId);
 
             return View(groups);
         }
@@ -30,6 +34,13 @@ namespace ExpensesWebApp.Controllers
             var group = await _db.Groups.FindAsync(id);
 
             if (group == null)
+            {
+                return NotFound();
+            }
+
+            var userId = _userManager.GetUserId(User);
+
+            if (group.UserId != userId)
             {
                 return NotFound();
             }
@@ -65,6 +76,9 @@ namespace ExpensesWebApp.Controllers
 
             if (ModelState.IsValid)
             {
+                var userId = _userManager.GetUserId(User);
+                group.UserId = userId;
+
                 _db.Groups.Add(group);
                 await _db.SaveChangesAsync();
                 TempData["success"] = "Grupo de despesas criado com sucesso.";
