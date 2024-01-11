@@ -1,17 +1,22 @@
 ﻿using ExpensesWebApp.Data;
 using ExpensesWebApp.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpensesWebApp.Controllers
 {
+    [Authorize]
     public class ExpenseController : Controller
     {
 
         private readonly ExpensesAppDbContext _db;
-        public ExpenseController(ExpensesAppDbContext db)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public ExpenseController(ExpensesAppDbContext db, UserManager<ApplicationUser> userManager)
         {
             _db = db;
+            _userManager = userManager;
         }
 
         // GET
@@ -25,6 +30,13 @@ namespace ExpensesWebApp.Controllers
             var group = await _db.Groups.FindAsync(groupId);
 
             if (group == null)
+            {
+                return NotFound();
+            }
+
+            var userId = _userManager.GetUserId(User);
+
+            if (group.UserId != userId)
             {
                 return NotFound();
             }
@@ -82,9 +94,18 @@ namespace ExpensesWebApp.Controllers
                 return NotFound();
             }
 
+            var groupId = expense.GroupId;
+            var group = await _db.Groups.FindAsync(groupId);
+            var userId = _userManager.GetUserId(User);
+
+            if (group!.UserId != userId)
+            {
+                return NotFound();
+            }
+
             IEnumerable<Category> categories = await _db.Categories.ToListAsync();
             ViewBag.Categories = categories;
-            ViewData["groupId"] = expense.GroupId;
+            ViewData["groupId"] = groupId;
 
             return View(expense);
         }
