@@ -4,14 +4,27 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace ExpensesWebApp.Migrations.UserDb
+namespace ExpensesWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class AddUser : Migration
+    public partial class NewAddUser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<DateTime>(
+                name: "CreatedAt",
+                table: "Groups",
+                type: "timestamp with time zone",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+
+            migrationBuilder.AddColumn<string>(
+                name: "UserId",
+                table: "Groups",
+                type: "text",
+                nullable: true);
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -161,6 +174,11 @@ namespace ExpensesWebApp.Migrations.UserDb
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Groups_UserId",
+                table: "Groups",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -196,11 +214,22 @@ namespace ExpensesWebApp.Migrations.UserDb
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Groups_AspNetUsers_UserId",
+                table: "Groups",
+                column: "UserId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Groups_AspNetUsers_UserId",
+                table: "Groups");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -221,6 +250,18 @@ namespace ExpensesWebApp.Migrations.UserDb
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Groups_UserId",
+                table: "Groups");
+
+            migrationBuilder.DropColumn(
+                name: "CreatedAt",
+                table: "Groups");
+
+            migrationBuilder.DropColumn(
+                name: "UserId",
+                table: "Groups");
         }
     }
 }
