@@ -21,6 +21,12 @@ namespace ExpensesWebApp.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Expense>()
+                        .HasOne(e => e.Category)
+                        .WithMany()
+                        .HasForeignKey(e => e.CategoryId)
+                        .OnDelete(DeleteBehavior.SetNull);
+
             modelBuilder.Entity<Category>()
                         .HasIndex(e => e.Name)
                         .IsUnique();
