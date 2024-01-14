@@ -9,6 +9,7 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
+            <input hidden asp-for="Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -45,17 +46,27 @@
             </div>
             <div class="form-group mb-2">
                 <label asp-for="CategoryId" class="control-label">Categoria</label>
-                <select asp-for="CategoryId" class="form-control">
-                    <option value="@null" selected>Nenhuma</option>
-                    @if (ViewBag.categories != null)
-                    {
-                        @foreach (var category in ViewBag.categories)
+                <div class="d-flex gap-2">
+                    <select asp-for="CategoryId" class="form-select">
+                        <option value="@null" selected>Nenhuma</option>
+                        @if (ViewBag.categories != null)
                         {
-                            <option value="@category.Id">@category.Name</option>
+                            @foreach (var category in ViewBag.categories)
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
                         }
-                    }
-                </select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </select>
+                    @*
+                        Parei nessa parte:
+                        Preciso passar o id pra CategoryController e ela tem que saber q eu estou editando e tem q retornar pra
+                        view de edit do id
+                    *@
+                    <a style="width:30%" href="@Url.Action("Create", "Category", new { returnTo = "edit/" + ViewData["id"] })" class="btn btn-primary text-center">
+                        <i class="bi bi-plus"></i>&nbsp;Criar
+                    </a>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
             </div>
             <input hidden asp-for="GroupId" value="@ViewData["groupId"]" />
             <div class="form-group mb-2">

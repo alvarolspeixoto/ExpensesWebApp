@@ -106,6 +106,7 @@ namespace ExpensesWebApp.Controllers
             IEnumerable<Category> categories = await _db.Categories.ToListAsync();
             ViewBag.Categories = categories;
             ViewData["groupId"] = groupId;
+            ViewData["id"] = id;
 
             return View(expense);
         }

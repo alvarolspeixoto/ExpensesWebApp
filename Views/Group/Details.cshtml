@@ -5,9 +5,12 @@
 <h1>@ViewData["groupName"]</h1>
 <p>Veja aqui as despesas desse grupo</p>
 
-<a href="@Url.Action("Create", "Expense", new {groupId = ViewData["groupId"]})" class="btn btn-primary mb-2">
-    <i class="bi bi-plus"></i>&nbsp;Adicionar nova despesa
-</a>
+<div class="d-flex justify-content-between mb-2">
+    <a href="@Url.Action("Create", "Expense", new {groupId = ViewData["groupId"]})" class="btn btn-primary">
+        <i class="bi bi-plus"></i>&nbsp;Adicionar nova despesa
+    </a>
+    <a asp-controller="Category" asp-action="Index" class="btn btn-secondary">Consultar categorias existentes</a>
+</div>
 <div class="flex align-content-center justify-content-center">
     @if (Model.Count() == 0)
     {
@@ -17,7 +20,7 @@
     }
     else
     {
-        <table class="table table-striped" style="width:80%">
+        <table class="table table-striped" style="width:100%">
             <thead>
                 <tr>
                     <th>Nome da despesa</th>
@@ -51,12 +54,12 @@
                             </td>
                         }
                         <td>
-                            @expense.Date.ToString("dd/MM/yyyy")
+                            @expense!.Date.ToString("dd/MM/yyyy")
                         </td>
                         @* <td>
-                            @{ String text = expense.Recurrent ? "Sim" : "Não"; }
-                            @text
-                        </td> *@
+                @{ String text = expense.Recurrent ? "Sim" : "Não"; }
+                @text
+                </td> *@
                         <td>
                             <div class="d-flex flex-row justify-content-end gap-1">
 

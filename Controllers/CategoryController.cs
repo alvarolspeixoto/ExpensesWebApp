@@ -26,20 +26,22 @@ namespace ExpensesWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create(string? returnTo)
         {
+            ViewData["returnTo"] = returnTo;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Category category)
+        public IActionResult Create(Category category, string? returnTo)
         {
 
             bool exists = _db.Categories.Any(c => c.Name == category.Name);
 
             if (exists)
             {
+                ViewData["returnTo"] = returnTo;
                 ModelState.AddModelError("Name", "Essa categoria já existe.");
             }
 
@@ -48,7 +50,20 @@ namespace ExpensesWebApp.Controllers
                 _db.Categories.Add(category);
                 _db.SaveChangesAsync();
                 TempData["success"] = "Categoria criada com sucesso.";
-                return RedirectToAction("Index");
+
+                if (returnTo == null)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                if (returnTo.Contains("edit"))
+                {
+                    var id = returnTo.Remove(0, "edit/".Length);
+                    return RedirectToAction("Edit", "Expense", new { id = id });
+                }
+
+                return RedirectToAction("Create", "Expense", new { groupId = returnTo });
+
             }
 
             TempData["error"] = "Algum erro ocorreu.";
