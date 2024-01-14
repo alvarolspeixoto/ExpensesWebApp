@@ -1,5 +1,6 @@
 ﻿using ExpensesWebApp.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpensesWebApp.Data
@@ -35,6 +36,11 @@ namespace ExpensesWebApp.Data
                         .HasIndex(e => e.Name)
                         .IsUnique();
 
+            modelBuilder.Entity<Group>()
+                        .HasOne(e => e.User)
+                        .WithMany()
+                        .HasForeignKey(e => e.UserId)
+                        .OnDelete(DeleteBehavior.Cascade);
         }
 
     }
