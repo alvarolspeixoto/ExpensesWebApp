@@ -28,6 +28,7 @@
                     <th>Categoria</th>
                     <th>Data</th>
                     @* <th>Recorrente</th> *@
+                    <th>Status</th>
                     <th style="width:30%"></th>
                 </tr>
             </thead>
@@ -55,6 +56,17 @@
                         }
                         <td>
                             @expense!.Date.ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @if (expense.Status == ExpensesWebApp.Enums.ExpenseStatus.Pending)
+                            {
+                                <span>Pendente</span>
+                            }
+                            else
+                            {
+                                <span>Paga</span>
+                            }
+
                         </td>
                         @* <td>
                 @{ String text = expense.Recurrent ? "Sim" : "Não"; }

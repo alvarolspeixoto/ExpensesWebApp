@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using ExpensesWebApp.Enums;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace ExpensesWebApp.Models
@@ -17,6 +18,8 @@ namespace ExpensesWebApp.Models
         [Required(ErrorMessage = "Escolha uma data.")]
         [DisplayName("Data")]
         public DateTime Date { get; set; }
+        [Required]
+        public ExpenseStatus Status { get; set; } = ExpenseStatus.Pending;
         [Required]
         [DisplayName("Despesa recorrente?")]
         public bool Recurrent { get; set; }
