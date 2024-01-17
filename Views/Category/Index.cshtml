@@ -34,13 +34,16 @@ else
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
-                    <td class="text-end">
+                    <td class="d-flex justify-content-end gap-1 text-end">
                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-dark">
                             <i class="bi bi-pencil-square"></i>&nbsp;Editar
                         </a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">
-                            <i class="bi bi-trash3"></i>&nbsp;Excluir
-                        </a>
+                        <form asp-action="Delete">
+                            <input hidden name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash3"></i>&nbsp;Excluir
+                            </button>
+                        </form>
                     </td>
                 </tr>
             }
