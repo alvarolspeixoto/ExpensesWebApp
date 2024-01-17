@@ -80,5 +80,11 @@
                 }
             </tbody>
         </table>
+        <div class="d-flex align-items-center">
+            @{
+                decimal totalValue = ViewBag.TotalValue;
+            }
+            <h4 class="btn btn-primary p-2">Valor total: <span>@totalValue.ToString("C")</span></h4>
+        </div>
     }
 </div>

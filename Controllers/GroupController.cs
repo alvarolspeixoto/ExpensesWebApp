@@ -49,6 +49,11 @@ namespace ExpensesWebApp.Controllers
 
             IEnumerable<Expense> groupExpenses = _db.Expenses.Where(a => a.GroupId == id).Include(e => e.Category);
 
+            decimal totalValue = 0;
+
+            foreach (var expense in groupExpenses) { totalValue += expense.Value; }
+
+            ViewBag.TotalValue = totalValue;
             ViewData["groupName"] = groupName;
             ViewData["groupId"] = id;
             return View(groupExpenses);
