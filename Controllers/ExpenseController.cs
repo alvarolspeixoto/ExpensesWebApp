@@ -162,6 +162,34 @@ namespace ExpensesWebApp.Controllers
             return RedirectToAction("Details", "Group", new { id = expense.GroupId });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ChangeStatus(int? id)
+        {
+
+            if(id == 0 || id == null)
+            {
+                TempData["error"] = "Algum erro ocorreu.";
+                return NotFound();
+            }
+
+            var expense = await _db.Expenses.FindAsync(id);
+
+            if(expense == null) {
+                TempData["error"] = "Algum erro ocorreu.";
+                return NotFound();
+            }
+
+            if (expense.Status == Enums.ExpenseStatus.Pending) {
+                expense.Status = Enums.ExpenseStatus.Paid;
+            }
+            _db.Expenses.Update(expense);
+            await _db.SaveChangesAsync();
+
+            TempData["success"] = "Status alterado com sucesso.";
+            return new JsonResult(Ok());
+
+        }
+
 
     }
 }

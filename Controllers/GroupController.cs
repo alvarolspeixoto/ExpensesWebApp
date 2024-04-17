@@ -47,7 +47,7 @@ namespace ExpensesWebApp.Controllers
 
             string groupName = group.Name!;
 
-            IEnumerable<Expense> groupExpenses = _db.Expenses.Where(a => a.GroupId == id).Include(e => e.Category);
+            IEnumerable<Expense> groupExpenses = _db.Expenses.Where(a => a.GroupId == id).Include(e => e.Category).OrderBy(e => e.Date);
 
             decimal totalValue = 0;
 
